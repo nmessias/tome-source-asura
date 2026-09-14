@@ -46,6 +46,8 @@ export const asuraSource: Source = {
     { href: `/read/${ASURA}/library`, label: "Library" },
   ],
   libraryActions: [{ href: `/read/${ASURA}/search`, label: "Search Comics" }],
+  // Image-first source: phones with no saved mode start scrolled.
+  defaultMode: "scrolled",
 
   // ---- core trio ----
   async search(query) {
