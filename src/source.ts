@@ -8,6 +8,7 @@
 import type { Source } from "tome";
 import type { Fiction, LibraryEntry } from "tome";
 import { searchComics, getComic, getComicChapter } from "./api";
+import { getLatest, latestPage } from "./latest";
 import {
   getLibrary,
   getLibraryEntry,
@@ -41,6 +42,7 @@ export const asuraSource: Source = {
   },
   navLinks: [
     { href: `/read/${ASURA}/search`, label: "Search" },
+    { href: `/read/${ASURA}/latest`, label: "Latest" },
     { href: `/read/${ASURA}/library`, label: "Library" },
   ],
   libraryActions: [{ href: `/read/${ASURA}/search`, label: "Search Comics" }],
@@ -84,6 +86,22 @@ export const asuraSource: Source = {
     }
     return chapter;
   },
+
+  // ---- source-specific pages (extraRoutes) ----
+  extraRoutes: [
+    {
+      // Latest-chapters feed (Asura homepage data, cached 15 min).
+      match(path, method) {
+        if (method !== "GET") return null;
+        return path === `/read/${ASURA}/latest` ? [] : null;
+      },
+      async handle() {
+        return new Response(latestPage(await getLatest()), {
+          headers: { "Content-Type": "text/html; charset=utf-8" },
+        });
+      },
+    },
+  ],
 
   // ---- capability ops ----
   async getLibrary(userId): Promise<LibraryEntry[]> {
