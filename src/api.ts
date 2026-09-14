@@ -130,9 +130,10 @@ export async function getComicChapter(
   const prev = nums.filter((n) => n < num).pop();
   const next = nums.find((n) => n > num);
   const content = pages
-    .map(
-      (p, i) =>
-        `<img src=\"${p.url}\" alt=\"Page ${i + 1}\" loading=\"lazy\" decoding=\"async\" referrerpolicy=\"no-referrer\" />`
+    .map((p, i) =>
+      i < 2
+        ? `<img src="${p.url}" alt="Page ${i + 1}" fetchpriority="high" decoding="async" referrerpolicy="no-referrer" />`
+        : `<img src="${p.url}" alt="Page ${i + 1}" loading="lazy" decoding="async" referrerpolicy="no-referrer" />`
     )
     .join("\n");
   return {
