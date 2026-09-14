@@ -27,7 +27,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "tome": "github:nmessias/tome"
+    "tome": "github:nmessias/tome#810ca18a985e57bdf4ca35cab3314dde9706c303"
   },
   "devDependencies": {
     "@types/bun": "latest",
