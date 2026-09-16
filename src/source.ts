@@ -56,7 +56,13 @@ export const asuraSource: Source = {
   async getFiction(ref, userId): Promise<Fiction | null> {
     const fiction = await getComic(ref);
     if (!fiction || !userId) return fiction;
-    if (isInLibrary(userId, ref)) {
+    // Always expose library membership: the core fiction page only renders
+    // the Add/Remove toggle when `isInLibrary` is defined. Leaving it
+    // undefined for not-yet-added fictions hid the button entirely — a
+    // chicken-and-egg: you could never add anything, only remove.
+    const inLibrary = isInLibrary(userId, ref);
+    fiction.isInLibrary = inLibrary;
+    if (inLibrary) {
       const entry = getLibraryEntry(userId, ref);
       const lastChapterRead = entry?.lastChapterRead || 0;
       if (fiction.chapters?.length) {
